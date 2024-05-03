@@ -13,7 +13,7 @@ const useListenMessages = () => {
     socket?.on("newMessage", (newMessage) => {
       newMessage.shouldShake = true;
       // const sound = new Audio(notificationSound);
-      sound.play();
+      // sound.play();
       setMessages([...messages, newMessage]);
     });
 
