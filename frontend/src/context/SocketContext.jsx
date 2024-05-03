@@ -15,29 +15,22 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const initializeSocket = () => {
-        const newSocket = io("http://localhost:5000", {
+
+        const socket = io("http://localhost:5000", {
           query: {
             userId: authUser._id,
           },
         });
+        
+        setSocket(socket);
 
-        newSocket.on("getOnlineUsers", (authUser) => {
+        socket.on("getOnlineUsers", (authUser) => {
           if (authUser) {
             setOnlineUsers(authUser);
           }
         });
 
-        setSocket(newSocket);
-      };
-
-      initializeSocket();
-
-      return () => {
-        if (socket) {
-          socket.close();
-        }
-      };
+      return () => socket.close();
     } else {
       if (socket) {
         socket.close();
