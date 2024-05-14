@@ -21,7 +21,7 @@ const Login = () => {
     const fetchCurrentUser = async () => {
       try {
         console.log("fetchiing...");
-        const res = await fetch("http://localhost:5000/api/auth/currentuser", {
+        const res = await fetch("https://chat-app-1-rkpt.onrender.com/api/auth/currentuser", {
           credentials: "include",
         });
         console.log(res);

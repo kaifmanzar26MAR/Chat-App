@@ -16,7 +16,7 @@ const __dirname = path.resolve();
 
 dotenv.config();
 app.use(cors({
-  origin:"http://localhost:5000",
+  origin:"https://chat-app-1-rkpt.onrender.com",
   credentials:true
 }))
 app.use(express.json()); //to parse the incoming request with JSON payload (from req.body)
