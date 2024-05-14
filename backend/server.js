@@ -8,14 +8,17 @@ import userRoutes from "./routes/user.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import cookieParser from "cookie-parser";
 import { app, server } from "./socket/socket.js";
-
+import cors from 'cors'
 // const app = express();
 const PORT = process.env.PORT || 5000;
 
 const __dirname = path.resolve();
 
 dotenv.config();
-
+app.use(cors({
+  origin:"http://localhost:5000",
+  credentials:true
+}))
 app.use(express.json()); //to parse the incoming request with JSON payload (from req.body)
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);

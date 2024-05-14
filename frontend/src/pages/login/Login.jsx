@@ -1,18 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { loading, login } = useLogin();
+  const { authUser, setAuthUser } = useAuthContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     await login(username, password);
-  }
+  };
+
+  useEffect(() => {
+    console.log("enter use effect");
+    const fetchCurrentUser = async () => {
+      try {
+        console.log("fetchiing...");
+        const res = await fetch("http://localhost:5000/api/auth/currentuser", {
+          credentials: "include",
+        });
+        console.log(res);
+        const data = await res.json();
+        if (!data) throw new Error("no user logedin!!");
+
+        console.log(data.user);
+        setAuthUser(data.user);
+      } catch (error) {}
+    };
+    fetchCurrentUser();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -32,7 +53,7 @@ const Login = () => {
               placeholder="Enter username"
               className="w-full input input-bordered h-10"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -45,7 +66,7 @@ const Login = () => {
               placeholder="Enter password"
               className="w-full input input-bordered h-10"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -57,8 +78,13 @@ const Login = () => {
           </Link>
 
           <div>
-            <button className="btn btn-block btn-sm mt-2" disabled={loading}
-            >{loading ? <span className="loading loading-spinner " /> : "Login"}</button>
+            <button className="btn btn-block btn-sm mt-2" disabled={loading}>
+              {loading ? (
+                <span className="loading loading-spinner " />
+              ) : (
+                "Login"
+              )}
+            </button>
           </div>
         </form>
       </div>
